@@ -1,0 +1,31 @@
+{
+  "name": "changer",
+  "version": "0.0.1",
+  "author": "Mike Vegeto <michael.vegeto@gmail.com>",
+  "description": "Change the contents of files according to rules",
+  "main": "./changer",
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "keywords": [
+    "child process",
+    "exec",
+    "launch",
+    "start",
+    "changer"
+  ],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://raw.github.com/ZECTBynmo/changer/master/LICENSE"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/ZECTBynmo/changer.git"
+  },
+  "dependencies": {
+    "buffered-writer": "~0.2.3",
+    "line-reader": "~0.2.3"
+  }
+}
