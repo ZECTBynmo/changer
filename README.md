@@ -28,7 +28,7 @@ exports.rules = {
 }
 ```
 
-Then in another file, we can apply the rule to some files
+Then in another file, we can apply the rules to some files
 
 ```JavaScript
 var change = require("changer").change,
