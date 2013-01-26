@@ -1,6 +1,6 @@
 {
   "name": "changer",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Mike Vegeto <michael.vegeto@gmail.com>",
   "description": "Change the contents of files according to rules",
   "main": "./changer",
