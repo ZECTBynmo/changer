@@ -47,6 +47,10 @@ function Changer( isZeroIndexed ) {
 	this.fileContents = [];
 	this.filePath = "";
 	this.isZeroIndexed = isZeroIndexed || true;
+
+	this.commentOutRule = function( lineNumber, text ) {
+		text = "// " + text;
+	}
 } // end Changer()
 
 
@@ -107,4 +111,11 @@ Changer.prototype.writeFile = function( filePath, callback ) {
 	}
 
 	writer.close();
+} // end writeFile()
+
+
+//////////////////////////////////////////////////////////////////////////
+// Convenience function to comment out some lines of code
+Changer.prototype.commentOut = function( file, startLine, endLine, callback ) {
+	this.change( this.commentOutRule, file, startLine, endLine, callback );
 } // end writeFile()
