@@ -49,8 +49,8 @@ function Changer( isZeroIndexed ) {
 	this.isZeroIndexed = isZeroIndexed || true;
 
 	this.commentOutRule = function( lineNumber, text ) {
-		text = "// " + text;
-	}
+		return "// " + text;;
+	};
 } // end Changer()
 
 
