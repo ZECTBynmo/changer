@@ -99,7 +99,7 @@ Changer.prototype.insert = function( text, file, line, callback ) {
 
 	// Read the file into an array
 	this.readIntoArray( file, function(fileContents) {
-		fileContents.splice( _this.isZeroIndexed ? line : line + 1, 0, text );
+		fileContents.splice( _this.isZeroIndexed ? line : line - 1, 0, text );
 
 		_this.writeFile( file, fileContents, callback );
 	});
