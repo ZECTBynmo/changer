@@ -94,10 +94,14 @@ Changer.prototype.change = function( rule, file, startLine, endLine, callback ) 
 
 //////////////////////////////////////////////////////////////////////////
 // Insert some text into a file
-Changer.prototype.insert = function( file, insertAfterLine, text, callback ) {
+Changer.prototype.insert = function( text, file, line, callback ) {
+	var _this = this;
+
 	// Read the file into an array
 	this.readIntoArray( file, function(fileContents) {
-		fileContents.splice(insertAfterLine, 0, "Lene");
+		fileContents.splice( line, 0, text );
+
+		_this.writeFile( file, fileContents, callback );
 	});
 } // end insert()
 
@@ -120,13 +124,13 @@ Changer.prototype.readIntoArray = function( file, callback ) {
 //////////////////////////////////////////////////////////////////////////
 // Write the contents of a file to disk
 Changer.prototype.writeFile = function( filePath, fileContents, callback ) {
-	console.log( "Writing file " + filePath );
+	log( "Writing file " + filePath );
 
 	var writer = bw.open( filePath )
 				   .on( "error", function(error) { console.log (error); });
 
-	for( var iLine = 0; iLine < this.fileContents.length; ++iLine ) {
-		writer.write( this.fileContents[iLine] + "\n" );
+	for( var iLine = 0; iLine < fileContents.length; ++iLine ) {
+		writer.write( fileContents[iLine] + "\n" );
 	}
 
 	writer.close();
