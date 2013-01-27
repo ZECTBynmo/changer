@@ -7,15 +7,7 @@
 /* ----------------------------------------------------------------------
                                                     Object Structures
 -------------------------------------------------------------------------
-	var task = {
-		lineNumber: someNumber,
-		task: someTask,
-		text: the text that's going into place
-	}
 
-	// Available task types
-	insert
-	replace
 */
 //////////////////////////////////////////////////////////////////////////
 // Node.js Exports
@@ -29,11 +21,11 @@ exports.createChanger = function( isZeroIndexed ) {
 var DEBUG = true;
 	
 var log = function( text, isImportant ) { 
-	if(DEBUG && isImportant) {
+	if( DEBUG && isImportant ) {
 		console.log("\n******************************************")
 		console.log("* " + text)
 		console.log("******************************************\n")
-	} else if(DEBUG) {
+	} else if( DEBUG ) {
 		console.log(text); 
 	};
 }
@@ -46,7 +38,7 @@ var bw = require("buffered-writer"),
 function Changer( isZeroIndexed ) {
 	this.fileContents = [];
 	this.filePath = "";
-	this.isZeroIndexed = isZeroIndexed || true;
+	this.isZeroIndexed = isZeroIndexed || false;
 
 	this.commentOutRule = function( lineNumber, text ) {
 		return "// " + text;;
@@ -59,6 +51,8 @@ function Changer( isZeroIndexed ) {
 Changer.prototype.change = function( rule, file, startLine, endLine, callback ) {	
 	var _this = this;
 
+	var fileContents = [];
+
 	// The callback is the last argument. This allows the 
 	// start and end lines to be optional arguments
 	callback = arguments[arguments.length-1];
@@ -67,7 +61,7 @@ Changer.prototype.change = function( rule, file, startLine, endLine, callback ) 
 
 	function readFinished() {
 		// Write the file
-		_this.writeFile( file, callback );
+		_this.writeFile( file, fileContents, callback );
 	}
 	
 	var linesRead = this.isZeroIndexed ? 0 : 1;
@@ -87,7 +81,7 @@ Changer.prototype.change = function( rule, file, startLine, endLine, callback ) 
 				newLine = line;
 		}
 
-	   	_this.fileContents.push( newLine );
+	   	fileContents.push( newLine );
 
 		if( last ) {
 			readFinished();
@@ -99,18 +93,47 @@ Changer.prototype.change = function( rule, file, startLine, endLine, callback ) 
 
 
 //////////////////////////////////////////////////////////////////////////
-// Write our current file buffer to disk
-Changer.prototype.writeFile = function( filePath, callback ) {
+// Insert some text into a file
+Changer.prototype.insert = function( file, insertAfterLine, text, callback ) {
+	// Read the file into an array
+	this.readIntoArray( file, function(fileContents) {
+		fileContents.splice(insertAfterLine, 0, "Lene");
+	});
+} // end insert()
+
+
+//////////////////////////////////////////////////////////////////////////
+// Reads a file and pushes its contents into an array
+Changer.prototype.readIntoArray = function( file, callback ) {
+	var fileContents = [];
+
+	lineReader.eachLine( file, function(line, last) {
+		fileContents.push( line );
+
+		if( last ) {
+			callback( fileContents );
+		}
+	}); // end for each line
+} // end readIntoArray()
+
+
+//////////////////////////////////////////////////////////////////////////
+// Write the contents of a file to disk
+Changer.prototype.writeFile = function( filePath, fileContents, callback ) {
 	console.log( "Writing file " + filePath );
 
 	var writer = bw.open( filePath )
-					.on ("error", function (error){ console.log (error); });
+				   .on( "error", function(error) { console.log (error); });
 
 	for( var iLine = 0; iLine < this.fileContents.length; ++iLine ) {
 		writer.write( this.fileContents[iLine] + "\n" );
 	}
 
 	writer.close();
+
+	if( callback != undefined ) {
+		callback();
+	}
 } // end writeFile()
 
 
