@@ -39,6 +39,15 @@ function Changer( isZeroIndexed ) {
 	this.fileContents = [];
 	this.filePath = "";
 	this.isZeroIndexed = isZeroIndexed || false;
+	this.defaultRules = {
+		insert: function( lineNumber, line, newText ) {
+			line = newText + "\n" + line;
+		}, 
+		change: function( lineNumber, line, newText ) {
+			line = newText;
+		},
+		remove: function( lineNumber, line, )
+	};
 
 	this.commentOutRule = function( lineNumber, text ) {
 		return "// " + text;;
@@ -50,6 +59,15 @@ function Changer( isZeroIndexed ) {
 // Change a file according to a rule
 Changer.prototype.change = function( rule, file, startLine, endLine, callback ) {	
 	var _this = this;
+
+	var args = [];
+
+	// Collect the optional args that we're going to pass into the rule
+	if( arguments.length > 5 ) {
+		for( var iArg=4; iArg<arguments.length-1; ++iArg ) {
+			args.push( arguments[iArg] );
+		}
+	}
 
 	var fileContents = [];
 
@@ -74,7 +92,13 @@ Changer.prototype.change = function( rule, file, startLine, endLine, callback ) 
 			(endLine != undefined && linesRead > endLine) ) {
 			// Do nothing
 		} else {
-			newLine = rule( linesRead, line );
+			var ruleArgs = [];
+			ruleArgs.push( linesRead );
+			ruleArgs.push( line );
+			for( var iOptArg=0; iOptArg<args.length; ++iOptArg )
+				ruleArgs.push( args[iOptArg] );
+
+			newLine = rule.apply( this, ruleArgs );
 			
 			// If the rule didn't return anything, just go with the original line
 			if( newLine === undefined )
