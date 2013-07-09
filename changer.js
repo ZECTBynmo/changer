@@ -46,7 +46,9 @@ function Changer( isZeroIndexed ) {
 		change: function( lineNumber, line, newText ) {
 			line = newText;
 		},
-		remove: function( lineNumber, line, )
+		remove: function( lineNumber, line ) {
+			line = "";
+		}
 	};
 
 	this.commentOutRule = function( lineNumber, text ) {
