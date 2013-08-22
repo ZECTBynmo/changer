@@ -5,7 +5,7 @@ Installation
 npm install changer
 ```
 
-To use changer you need to create some rules. A rule is a just a function, and it returns the (possibly modified) line of text. Here's an example rule:
+To use changer you need to create some rules. A rule is a just a function, and it returns the (possibly modified) line of text. Here's an example rules file:
 
 ```JavaScript
 exports.replaceEvens = function( lineNumber, text ) {
@@ -25,7 +25,7 @@ exports.commentOut = function( lineNumber, text ) {
 
 Then in another file, we can apply the rules to some files
 
-```JavaScript
+```JavaScripte
 var change = require("changer").change,
 	rules = require("./ruleSet");
 
