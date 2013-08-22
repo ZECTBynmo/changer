@@ -22,7 +22,7 @@ var commentOut = function( lineNumber, text ) {
 	return text;
 }
 
-exports.rules = {
+exports = {
 	replace: replaceEvens,
 	commentOut: commentOut
 }
