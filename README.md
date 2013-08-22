@@ -8,23 +8,18 @@ npm install changer
 To use changer you need to create some rules. A rule is a just a function, and it returns the (possibly modified) line of text. Here's an example rule:
 
 ```JavaScript
-var replaceEvens = function( lineNumber, text ) {
+exports.replaceEvens = function( lineNumber, text ) {
 	if( lineNumber % 2 == 2 )
 		text.replace( "Hello", "Goodbye" );
 
 	return text;
 }
 
-var commentOut = function( lineNumber, text ) {
+exports.commentOut = function( lineNumber, text ) {
 	if( lineNumber > 50 && lineNumber < 60 )
 		text = "// " + text;
 
 	return text;
-}
-
-exports = {
-	replace: replaceEvens,
-	commentOut: commentOut
 }
 ```
 
