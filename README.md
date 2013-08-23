@@ -1,6 +1,9 @@
+# changer
+
 changer reads in files and modifies them according to rules that you specify. It can be used to automatically modify code, change text, or anything else.
 
-Installation
+### Installation
+
 ```
 npm install changer
 ```
